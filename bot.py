@@ -360,13 +360,8 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         )
 
 
-def main() -> None:
-    """Start the bot."""
-    # For Python 3.10+ on Windows, explicitly create and set event loop
-    if sys.platform == 'win32':
-        loop = asyncio.ProactorEventLoop()
-        asyncio.set_event_loop(loop)
-    
+async def main_async() -> None:
+    """Async main function to start the bot."""
     # Create the Application
     application = Application.builder().token(BOT_TOKEN).build()
 
@@ -390,7 +385,12 @@ def main() -> None:
     logger.info('Starting Parcel Tracker Bot...')
 
     # Start the bot
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    await application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+
+def main() -> None:
+    """Start the bot with proper event loop management."""
+    asyncio.run(main_async())
 
 
 if __name__ == '__main__':
